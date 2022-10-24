@@ -3,7 +3,7 @@ pragma solidity 0.8.16;
 
 import "forge-std/Test.sol";
 
-contract SolidityTest is Test {
+contract BytesEncodingTest is Test {
     using stdStorage for StdStorage;
 
     function testManuallyEncodeWithSignature() public {

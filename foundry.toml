@@ -3,4 +3,9 @@ src = 'contracts'
 out = 'out'
 libs = ['lib']
 
+[rpc_endpoints]
+mainnet = "https://eth-mainnet.g.alchemy.com/v2/${RPC_MAINNET}"
+goerli = "https://eth-goerli.g.alchemy.com/v2/${GOERLI_API_KEY}"
+polygon = "https://polygon-mainnet.g.alchemy.com/v2/${POLYGON_API_KEY}"
+
 # See more config options https://github.com/gakonst/foundry/tree/master/config

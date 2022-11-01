@@ -34,6 +34,7 @@ const logGasUsage = (currentGasUsage) => {
 // - You may not modify the victim contract
 
 describe("Mint150", async function () {
+    let owner;
     let attacker;
     let victimToken;
 
@@ -41,7 +42,7 @@ describe("Mint150", async function () {
         await ethers.provider.send("hardhat_reset");
 
         [owner, attacker] = await ethers.getSigners();
-        const VictimToken = await ethers.getContractFactory("contracts/contracts_optimized/OptimizedMint150.sol:NotRareToken");
+        const VictimToken = await ethers.getContractFactory("contracts/gasPuzzles/Mint150/Mint150.sol:NotRareToken");
         victimToken = await VictimToken.deploy();
         await victimToken.deployed();
 
@@ -57,12 +58,15 @@ describe("Mint150", async function () {
     describe("Gas target", function () {
         it("The functions MUST meet the expected gas efficiency", async function () {
             const attackerContract = await ethers.getContractFactory(
-                "OptimizedAttacker"
+                "contracts/gasPuzzles/Mint150/Mint150.sol:Attacker"
             );
+
+            const firstTokenId = (await victimToken.balanceOf(owner.address)).add(1);
+            const lastTokenId = firstTokenId.add(150);
 
             const txn = await attackerContract
                 .connect(attacker)
-                .deploy(victimToken.address);
+                .deploy(victimToken.address, firstTokenId, lastTokenId);
 
             const receipt = await txn.deployTransaction.wait();
             const gasUsed = receipt.cumulativeGasUsed;
@@ -78,12 +82,15 @@ describe("Mint150", async function () {
     describe("Business logic", function () {
         it("The attacker MUST mint 150 NFTs in one transaction", async function () {
             const attackerContract = await ethers.getContractFactory(
-                "OptimizedAttacker"
+                "contracts/gasPuzzles/Mint150/Mint150.sol:Attacker"
             );
+
+            const firstTokenId = (await victimToken.balanceOf(owner.address)).add(1);
+            const lastTokenId = firstTokenId.add(150);
 
             const txn = await attackerContract
                 .connect(attacker)
-                .deploy(victimToken.address);
+                .deploy(victimToken.address, firstTokenId, lastTokenId);
         });
     });
 

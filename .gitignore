@@ -1,3 +1,9 @@
 cache/
 out/
+node_modules/
 .env
+yarn-error.log
+
+#Hardhat files
+cache
+artifacts
